@@ -1,0 +1,24 @@
+Example config
+
+```
+    maba_oauth_commerce_encrypted_credentials:
+        local:                            # local token providers to handle encrypted user credentials
+            accounts_password:            # key for manager, should not change when already used; must be unique
+                certificate:
+    #                id: service_id        # use service id or other parameters
+                    content: %maba_oauth_commerce.certificate%    # content of certificate
+                    hash:
+    #                    id: service_id    # use service id or other parameters
+                        algorithm: sha256
+                        type: sha-256
+                decrypting:
+    #                id: service_id        # use service id or other parameters
+                    algorithm: rijndael-256
+                    type: aes-256-cbc
+                key_exchange:
+    #                id: service_id        # use service id or other parameters
+                    private_key: %maba_oauth_commerce.private_key%                    # private key content, related to certificate
+                    private_key_password: %maba_oauth_commerce.private_key_password%  # optional
+                credentials_handler: service_id   # service id for credentials handler, implements CredentialsHandlerInterface
+                expiration_interval: P1D  # token expiration interval spec for DateInterval, defaults to 2 days
+```
