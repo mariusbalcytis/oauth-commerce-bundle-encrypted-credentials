@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="maba_oauth_commerce_encrypted_credentials.certificate_route">maba_oauth_commerce_encrypted_credentials_certificate</parameter>
+        <parameter key="maba_oauth_commerce_encrypted_credentials.certificate_content"/>
+    </parameters>
+    <services>
+        <service id="maba_oauth_commerce_encrypted_credentials.manager"
+                 class="Maba\Bundle\OAuthCommerceEncryptedCredentialsBundle\Manager\EncryptedCredentialsManager">
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
+        </service>
+
+        <service id="maba_oauth_commerce_encrypted_credentials.base_local_token_provider"
+                 class="Maba\Bundle\OAuthCommerceEncryptedCredentialsBundle\TokenProvider\LocalTokenProvider"
+                 abstract="true">
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.default_entity_manager"/>
+            </call>
+        </service>
+        <service id="maba_oauth_commerce_encrypted_credentials.base_local_certificate_provider"
+                 class="Maba\Bundle\OAuthCommerceEncryptedCredentialsBundle\Certificate\LocalCertificateProvider"
+                 abstract="true">
+            <argument type="service" id="router"/>
+            <argument>%maba_oauth_commerce_encrypted_credentials.certificate_route%</argument>
+        </service>
+    </services>
+</container>
